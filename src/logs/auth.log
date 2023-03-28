@@ -1,0 +1,65 @@
+[2023-03-13T10:37:11.571Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-13T10:37:17.892Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-13T11:51:30.103Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-13T14:46:38.111Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-13T15:55:42.204Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-14T11:48:56.081Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-14T17:06:34.398Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-14T21:22:36.797Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-15T12:29:47.571Z] ValidationError: wallets.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    name: 'Example',\n" +
+  "    id: 'ca075076-e080-44d0-ad2e-86e1cef17fd1',\n" +
+  '    balance: 0\n' +
+  '  }\n' +
+  ']" (type string) at path "wallets.0" because of "CastError", categories.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    id: '1512580b-bb3d-43d3-8095-b55d457d631f',\n" +
+  "    name: 'salary',\n" +
+  "    type: 'income'\n" +
+  '  },\n' +
+  '  {\n' +
+  "    id: '53e88ced-0987-4005-ae20-c1da9bd4b09a',\n" +
+  "    name: 'clothes',\n" +
+  "    type: 'expense'\n" +
+  '  }\n' +
+  ']" (type string) at path "categories.0" because of "CastError", transactions.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    id: '65bdcffd-fc56-4b25-bffe-f8251508952c',\n" +
+  "    description: 'test income',\n" +
+  '    amount: 100,\n' +
+  "    type: 'income',\n" +
+  "    categoryId: '1512580b-bb3d-43d3-8095-b55d457d631f',\n" +
+  "    walletId: 'ca075076-e080-44d0-ad2e-86e1cef17fd1',\n" +
+  '    date: 2023-03-15T12:29:47.551Z\n' +
+  '  }\n' +
+  ']" (type string) at path "transactions.0" because of "CastError"
+[2023-03-15T12:30:22.177Z] ValidationError: wallets.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    name: 'Example',\n" +
+  "    id: 'fa76a549-9644-40cb-81d0-8beb705d5928',\n" +
+  '    balance: 0\n' +
+  '  }\n' +
+  ']" (type string) at path "wallets.0" because of "CastError", categories.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    id: '06f19d5a-eb8c-4db9-b4e6-34fe2bf94601',\n" +
+  "    name: 'salary',\n" +
+  "    type: 'income'\n" +
+  '  },\n' +
+  '  {\n' +
+  "    id: 'bcb71515-5cc1-491d-b3c0-193fa52563af',\n" +
+  "    name: 'clothes',\n" +
+  "    type: 'expense'\n" +
+  '  }\n' +
+  ']" (type string) at path "categories.0" because of "CastError", transactions.0: Cast to [ObjectId] failed for value "[\n' +
+  '  {\n' +
+  "    id: '1362229a-8709-4d00-bb4e-e8564617c5ec',\n" +
+  "    description: 'test income',\n" +
+  '    amount: 100,\n' +
+  "    type: 'income',\n" +
+  "    categoryId: '06f19d5a-eb8c-4db9-b4e6-34fe2bf94601',\n" +
+  "    walletId: 'fa76a549-9644-40cb-81d0-8beb705d5928',\n" +
+  '    date: 2023-03-15T12:30:22.173Z\n' +
+  '  }\n' +
+  ']" (type string) at path "transactions.0" because of "CastError"
+[2023-03-16T09:40:54.533Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
