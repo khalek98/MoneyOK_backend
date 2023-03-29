@@ -1,10 +1,8 @@
-import { randomUUID } from "crypto";
 import { Response } from "express";
 import { validationResult } from "express-validator";
 
 import { Request } from "express.interface";
 import Category, { ICategory } from "./../models/Category";
-import User from "../models/User";
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
@@ -18,13 +16,12 @@ export const createCategory = async (req: Request, res: Response) => {
     const { name, type } = req.body as ICategory;
 
     const newCategory = new Category({
-      id: randomUUID(),
       name,
       type,
       userId,
     });
 
-    await User.findByIdAndUpdate(userId, { $push: { categories: newCategory._id } }, { new: true });
+    // await User.findByIdAndUpdate(userId, { $push: { categories: newCategory._id } }, { new: true });
 
     const result = await newCategory.save();
     res.status(201).json({ message: "Category saved success", result });
@@ -72,7 +69,7 @@ export const readCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const category = await Category.findOne({ id });
+    const category = await Category.findById(id);
 
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
@@ -96,13 +93,7 @@ export const updateCategory = async (req: Request, res: Response) => {
 
     const updateBody = req.body as ICategory;
 
-    console.log(updateBody);
-
-    const updatedCategory = await Category.findOneAndUpdate(
-      { id },
-      { ...updateBody },
-      { new: true },
-    );
+    const updatedCategory = await Category.findByIdAndUpdate(id, { ...updateBody }, { new: true });
 
     if (!updatedCategory) {
       return res.status(404).json({ error: "Category not found" });
@@ -119,7 +110,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const category = await Category.findOneAndDelete({ id });
+    const category = await Category.findByIdAndDelete(id);
 
     res.status(200).json({ message: "Transaction deleted successfully", response: category });
   } catch (error) {

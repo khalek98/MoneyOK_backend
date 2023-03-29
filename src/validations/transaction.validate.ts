@@ -2,7 +2,7 @@ import { body } from "express-validator";
 import { TransactionType } from "./../models/Transaction";
 
 export const validateCreateTransaction = [
-  body("description", "Description type must be string").isString(),
+  body("description", "Description type must be string").isString().optional(),
   body("amount", "Amount must be a number").isNumeric(),
   body("type", "Type must be either income or expense").isIn([
     TransactionType.EXPENSE,

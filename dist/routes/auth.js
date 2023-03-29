@@ -1,25 +1,21 @@
-import express, { Request, Response } from "express";
-import passport from "passport";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
 // import { OAuth2Client } from "google-auth-library";
-
-import { loginValidation, registerValidation } from "../validations/validations";
-import { authSignUp, authLogin, authConfirmToken } from "../controllers/auth.controller";
-
-const router = express.Router();
-
+const validations_1 = require("../validations/validations");
+const auth_controller_1 = require("../controllers/auth.controller");
+const router = express_1.default.Router();
 // Register new user by email
-router.post("/signup", registerValidation, authSignUp);
-
+router.post("/signup", validations_1.registerValidation, auth_controller_1.authSignUp);
 // Authentication user,
-router.post("/login", loginValidation, authLogin);
-
+router.post("/login", validations_1.loginValidation, auth_controller_1.authLogin);
 // router.get("/google/login", passport.authenticate("google", { scope: ["profile", "email"] }));
-
-router.get("/confirm/:token", authConfirmToken);
-
+router.get("/confirm/:token", auth_controller_1.authConfirmToken);
 // // Register new user by Google
 // router.get("/google", passport.authenticate("google", { scope: ["email", "profile"] }));
-
 // router.get(
 //   "/google/callback",
 //   passport.authenticate("google", {
@@ -32,7 +28,6 @@ router.get("/confirm/:token", authConfirmToken);
 //         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 //         redirectUri: "http://localhost:4000/api/auth/google/callback",
 //       });
-
 //       const { data } = await client.request({
 //         url: "https://www.googleapis.com/oauth2/v1/userinfo",
 //         headers: {
@@ -40,7 +35,6 @@ router.get("/confirm/:token", authConfirmToken);
 //           Authorization: `Bearer ${req.user.accessToken}`,
 //         },
 //       });
-
 //       console.log("req:", req);
 //       res.redirect("/");
 //     } catch (err) {
@@ -49,7 +43,6 @@ router.get("/confirm/:token", authConfirmToken);
 //     }
 //   },
 // );
-
 // // Register new user by Apple
 // router.get(
 //   "/apple",
@@ -59,7 +52,6 @@ router.get("/confirm/:token", authConfirmToken);
 //     failureRedirect: "/login",
 //   }),
 // );
-
 // router.get(
 //   "/apple/callback",
 //   passport.authenticate("apple", {
@@ -70,5 +62,4 @@ router.get("/confirm/:token", authConfirmToken);
 //     res.redirect("/");
 //   },
 // );
-
-export default router;
+exports.default = router;

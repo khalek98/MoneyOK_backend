@@ -1,10 +1,8 @@
-import { randomUUID } from "crypto";
 import { Response } from "express";
 import { validationResult } from "express-validator";
 
 import Wallet, { IWallet } from "../models/Wallet";
 import { Request } from "express.interface";
-import User from "../models/User";
 import Transaction from "../models/Transaction";
 
 export const createWallet = async (req: Request, res: Response) => {
@@ -19,13 +17,12 @@ export const createWallet = async (req: Request, res: Response) => {
     const { name } = req.body as IWallet;
 
     const newWallet = new Wallet({
-      id: randomUUID(),
       name,
       userId,
       transactions: [],
     });
 
-    await User.findByIdAndUpdate(userId, { $push: { wallets: newWallet._id } }, { new: true });
+    // await User.findByIdAndUpdate(userId, { $push: { wallets: newWallet._id } }, { new: true });
 
     const result = await newWallet.save();
     res.status(201).json({ message: "Wallet saved success", result });
@@ -63,13 +60,13 @@ export const updateWallet = async (req: Request, res: Response) => {
 
     const updateBody = req.body as IWallet;
 
-    const updatedWallet = await Wallet.findOneAndUpdate({ id }, { ...updateBody }, { new: true });
+    const updatedWallet = await Wallet.findByIdAndUpdate(id, { ...updateBody }, { new: true });
 
     if (!updatedWallet) {
       return res.status(404).json({ error: "Wallet not found" });
     }
 
-    res.json({ message: "Wallet updated", transaction: updatedWallet });
+    res.json({ message: "Wallet updated", wallet: updatedWallet });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -83,7 +80,7 @@ export const deleteWallet = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const wallet = await Wallet.findOne({ id });
+    const wallet = await Wallet.findById(id);
 
     if (!wallet) {
       return res.status(404).json({ message: "Wallet not found" });
@@ -93,7 +90,7 @@ export const deleteWallet = async (req: Request, res: Response) => {
 
     transactionsByWallet.forEach((transaction) => transaction.deleteOne({ session }));
 
-    await Wallet.findOneAndDelete({ id });
+    await Wallet.findByIdAndDelete(id);
 
     await session.commitTransaction();
 

@@ -50,29 +50,30 @@ export const createTransaction = async (req: Request, res: Response) => {
     }
 
     const userId = req.user._id;
-    const { amount, description, type, categoryId, walletId } = req.body as ITransaction;
+    const { amount, description, type, categoryId, walletId, date } = req.body as ITransaction;
 
-    const user: IUser = await User.findById(userId).populate("wallets categories");
+    // const user: IUser = await User.findById(userId).populate("wallets categories");
 
-    if (!user.wallets.some((wallet: IWallet) => wallet._id.equals(walletId))) {
+    const category: ICategory = await Category.findById(categoryId);
+    const wallet: IWallet = await Wallet.findById(walletId);
+
+    if (!category) {
+      return res.status(400).json({ msg: "Category not found" });
+    }
+    if (!wallet) {
       return res.status(400).json({ msg: "Wallet not found" });
     }
 
-    if (!user.categories.some((category: ICategory) => category._id.equals(categoryId))) {
-      return res.status(400).json({ msg: "Category not found" });
-    }
-
     const newTransaction = new Transaction({
-      id: randomUUID(),
+      // id: randomUUID(),
       description,
       amount,
       type,
       categoryId,
       walletId,
       userId,
+      date,
     });
-
-    const wallet = user.wallets.find((wallet) => wallet._id.equals(walletId));
 
     if (type === "income") {
       wallet.balance += amount;
@@ -80,15 +81,15 @@ export const createTransaction = async (req: Request, res: Response) => {
       wallet.balance -= amount;
     }
 
-    await Category.findByIdAndUpdate(
-      categoryId,
-      { $push: { transactions: newTransaction._id } },
-      { new: true },
-    );
+    // await Category.findByIdAndUpdate(
+    //   categoryId,
+    //   { $push: { transactions: newTransaction._id } },
+    //   { new: true },
+    // );
 
-    await Wallet.findByIdAndUpdate(walletId, { balance: wallet.balance }, { new: true }).session(
-      session,
-    );
+    await wallet.updateOne({ balance: wallet.balance }, { new: true }).session(session);
+
+    // await Wallet.findByIdAndUpdate(walletId, { balance: wallet.balance }, { new: true })
 
     const result = await newTransaction.save({ session });
 
@@ -110,7 +111,7 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 
   try {
     const { id } = req.params;
-    const transaction = await Transaction.findOne({ id });
+    const transaction = await Transaction.findById(id);
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }
@@ -132,13 +133,13 @@ export const deleteTransaction = async (req: Request, res: Response) => {
     await transaction.deleteOne({ session });
 
     // Delete transaction from category
-    await Category.findByIdAndUpdate(
-      transaction.categoryId,
-      {
-        $pull: { transactions: transaction._id },
-      },
-      { new: true },
-    ).session(session);
+    // await Category.findByIdAndUpdate(
+    //   transaction.categoryId,
+    //   {
+    //     $pull: { transactions: transaction._id },
+    //   },
+    //   { new: true },
+    // ).session(session);
 
     // Commit the transaction
     await session.commitTransaction();
@@ -157,7 +158,7 @@ export const readTransaction = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const transaction = await Transaction.findOne({ id });
+    const transaction = await Transaction.findById(id);
 
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
@@ -171,6 +172,9 @@ export const readTransaction = async (req: Request, res: Response) => {
 };
 
 export const updateTransaction = async (req: Request, res: Response) => {
+  const session = await startSession();
+  session.startTransaction();
+
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -181,19 +185,39 @@ export const updateTransaction = async (req: Request, res: Response) => {
 
     const updateBody = req.body as ITransaction;
 
-    const updatedTransaction = await Transaction.findOneAndUpdate(
-      { id },
-      { ...updateBody },
-      { new: true },
-    );
+    const transaction = await Transaction.findById(id);
 
-    if (!updatedTransaction) {
+    if (!transaction) {
       return res.status(404).json({ error: "Transaction not found" });
     }
 
+    const updatedTransaction = await transaction
+      .updateOne({ ...updateBody }, { new: true })
+      .session(session);
+
+    if ("amount" in updateBody) {
+      const { walletId, type } = transaction;
+      const wallet: IWallet = await Wallet.findById(walletId);
+
+      const newAmount = updateBody.amount - transaction.amount;
+
+      if (type === "income") {
+        wallet.balance += newAmount;
+      } else {
+        wallet.balance -= newAmount;
+      }
+
+      await wallet.updateOne({ balance: wallet.balance }, { new: true }).session(session);
+    }
+
+    await session.commitTransaction();
+
     res.json({ message: "Transaction updated", transaction: updatedTransaction });
   } catch (error) {
+    await session.abortTransaction();
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
+  } finally {
+    session.endSession();
   }
 };

@@ -1,28 +1,26 @@
-import passport from "passport";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const passport_1 = __importDefault(require("passport"));
 // import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 // import { randomUUID } from "crypto";
-import dotenv from "dotenv";
-import { Strategy, ExtractJwt } from "passport-jwt";
-
+const dotenv_1 = __importDefault(require("dotenv"));
+const passport_jwt_1 = require("passport-jwt");
 // import User from "./models/User";
-
-dotenv.config();
-
+dotenv_1.default.config();
 // Настройка passport
 // Passport JWT configuration
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET,
 };
-
-passport.use(
-  new Strategy(jwtOptions, (payload, done) => {
+passport_1.default.use(new passport_jwt_1.Strategy(jwtOptions, (payload, done) => {
     // You can use the payload to verify the user and set the user object in the request
-    const user = { ...payload };
+    const user = Object.assign({}, payload);
     done(null, user);
-  }),
-);
-
+}));
 // Configure the Google strategy with your API credentials
 // passport.use(
 //   new GoogleStrategy(
@@ -42,7 +40,6 @@ passport.use(
 //           } else {
 //             // Create new user in database
 //             const categoryId = randomUUID();
-
 //             const newUser = new User({
 //               id: randomUUID(),
 //               googleId: profile.id,
@@ -72,7 +69,6 @@ passport.use(
 //                 },
 //               ],
 //             });
-
 //             newUser
 //               .save()
 //               .then((savedUser) => {
@@ -91,12 +87,10 @@ passport.use(
 //     },
 //   ),
 // );
-
 // Сериализация пользователя для сохранения в сессии
 // passport.serializeUser((user: any, done) => {
 //   done(null, user._id);
 // });
-
 // Десериализация пользователя при извлечении его из сессии
 // passport.deserializeUser(async (id: any, done) => {
 //   try {
@@ -107,5 +101,4 @@ passport.use(
 //     done(error);
 //   }
 // });
-
-export default passport;
+exports.default = passport_1.default;

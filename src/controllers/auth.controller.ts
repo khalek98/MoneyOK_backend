@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { validationResult } from "express-validator";
-import { randomUUID } from "crypto";
+// import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -19,10 +19,10 @@ export const authSignUp = async (req: Request, res: Response) => {
   const { email, password, username } = req.body as IUser;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const userId = randomUUID();
+  // const userId = randomUUID();
 
   const user = new User({
-    id: userId,
+    // id: userId,
     email,
     password: hashedPassword,
     username,
@@ -31,7 +31,7 @@ export const authSignUp = async (req: Request, res: Response) => {
   user
     .save({ validateBeforeSave: true })
     .then(({ _id }) => {
-      const token = jwt.sign({ email, id: userId, _id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
 
@@ -70,8 +70,8 @@ export const authLogin = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Email not confirmed" });
   }
 
-  const { id, _id } = user;
-  const token = jwt.sign({ email, id, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  const { _id } = user;
+  const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
   return res.status(200).json({ token });
 };
@@ -82,7 +82,7 @@ export const authConfirmToken = (req: Request, res: Response) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as IUser;
 
-    User.findOneAndUpdate({ id: decoded.id }, { isConfirmed: true }, { new: true })
+    User.findByIdAndUpdate(decoded._id, { isConfirmed: true }, { new: true })
       .then((res) => console.log("Email confirmed", res))
       .catch((err) => console.log(err));
     return res.status(200).send("<h1>Email confirmed<h1/>");

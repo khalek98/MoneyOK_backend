@@ -9,7 +9,6 @@ export enum TransactionType {
 }
 
 export interface ITransaction extends Document {
-  id: string;
   description?: string;
   amount: number;
   type: TransactionType;
@@ -22,7 +21,6 @@ export interface ITransaction extends Document {
 // Transaction schema
 const TransactionSchema: Schema<ITransaction> = new Schema(
   {
-    id: { type: String, required: true },
     description: { type: String, default: "" },
     amount: { type: Number, required: true },
     type: { type: String, enum: [TransactionType.INCOME, TransactionType.EXPENSE], required: true },

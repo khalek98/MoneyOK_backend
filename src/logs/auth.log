@@ -63,3 +63,4 @@
   '  }\n' +
   ']" (type string) at path "transactions.0" because of "CastError"
 [2023-03-16T09:40:54.533Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-03-29T15:14:02.961Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: id_1 dup key: { id: null }
