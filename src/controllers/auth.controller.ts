@@ -184,7 +184,7 @@ export const authConfirmToken = (req: Request, res: Response) => {
     User.findByIdAndUpdate(decoded._id, { isConfirmed: true }, { new: true })
       .then((res) => console.log("Email confirmed", res))
       .catch((err) => console.log(err));
-    return res.status(200).redirect("http://localhost:3000/auth/confirmed");
+    return res.status(200).redirect(`${process.env.APP_URL}/auth/confirmed`);
   } catch (err) {
     return res.status(400).send("<h1>Invalid token<h1/>");
   }
