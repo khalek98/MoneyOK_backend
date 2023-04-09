@@ -4,8 +4,7 @@ import authMiddleware from "../middlewares/authMiddleware";
 
 import {
   createTransaction,
-  allIncomeTransactions,
-  allExpenseTransactions,
+  readAllTransactions,
   updateTransaction,
   deleteTransaction,
   readTransaction,
@@ -18,9 +17,9 @@ import { validatePropsTransaction } from "../middlewares/validateKeyInBody";
 
 const router = Router();
 
-router.get("/incomeList", authMiddleware, allIncomeTransactions);
+router.get("/", authMiddleware, readAllTransactions);
 
-router.get("/expenseList", authMiddleware, allExpenseTransactions);
+// router.get("/expenseList", authMiddleware, allExpenseTransactions);
 
 router.get("/:id", authMiddleware, readTransaction);
 

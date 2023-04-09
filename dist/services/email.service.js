@@ -13,13 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendConfirmationEmail = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+dotenv_1.default.config();
 const transporter = nodemailer_1.default.createTransport({
     host: "smtp.office365.com",
     port: 587,
     auth: {
-        user: "xalek.islam@outlook.com",
-        pass: "17supusaH",
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
     },
 });
 const sendConfirmationEmail = (user, token) => __awaiter(void 0, void 0, void 0, function* () {

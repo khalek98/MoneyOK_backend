@@ -1,12 +1,10 @@
 import { Document, Model, Schema, model } from "mongoose";
-import { ITransaction } from "./Transaction";
 import { IUser } from "./User";
 
 export interface IWallet extends Document {
   name: string;
   userId: IUser["_id"];
   balance?: number;
-  transactions: ITransaction["_id"][];
 }
 
 // Wallet schema

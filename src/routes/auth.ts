@@ -3,7 +3,8 @@ import passport from "passport";
 // import { OAuth2Client } from "google-auth-library";
 
 import { loginValidation, registerValidation } from "../validations/validations";
-import { authSignUp, authLogin, authConfirmToken } from "../controllers/auth.controller";
+import { authSignUp, authSignIn, authConfirmToken, getUser } from "../controllers/auth.controller";
+import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
@@ -11,7 +12,10 @@ const router = express.Router();
 router.post("/signup", registerValidation, authSignUp);
 
 // Authentication user,
-router.post("/login", loginValidation, authLogin);
+router.post("/signIn", loginValidation, authSignIn);
+
+// Get User
+router.get("/", authMiddleware, getUser);
 
 // router.get("/google/login", passport.authenticate("google", { scope: ["profile", "email"] }));
 

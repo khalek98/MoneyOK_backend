@@ -9,8 +9,8 @@ const transactions_controller_1 = require("../controllers/transactions.controlle
 const transaction_validate_1 = require("../validations/transaction.validate");
 const validateKeyInBody_1 = require("../middlewares/validateKeyInBody");
 const router = (0, express_1.Router)();
-router.get("/incomeList", authMiddleware_1.default, transactions_controller_1.allIncomeTransactions);
-router.get("/expenseList", authMiddleware_1.default, transactions_controller_1.allExpenseTransactions);
+router.get("/", authMiddleware_1.default, transactions_controller_1.readAllTransactions);
+// router.get("/expenseList", authMiddleware, allExpenseTransactions);
 router.get("/:id", authMiddleware_1.default, transactions_controller_1.readTransaction);
 router.post("/", authMiddleware_1.default, transaction_validate_1.validateCreateTransaction, transactions_controller_1.createTransaction);
 router.patch("/:id", authMiddleware_1.default, validateKeyInBody_1.validatePropsTransaction, transaction_validate_1.validateUpdateTransaction, transactions_controller_1.updateTransaction);

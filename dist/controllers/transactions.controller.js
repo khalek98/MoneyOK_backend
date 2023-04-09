@@ -12,16 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTransaction = exports.readTransaction = exports.deleteTransaction = exports.createTransaction = exports.allExpenseTransactions = exports.allIncomeTransactions = void 0;
+exports.updateTransaction = exports.readTransaction = exports.deleteTransaction = exports.createTransaction = exports.readAllTransactions = void 0;
 const mongoose_1 = require("mongoose");
 const express_validator_1 = require("express-validator");
 const Transaction_1 = __importDefault(require("../models/Transaction"));
 const Category_1 = __importDefault(require("../models/Category"));
 const Wallet_1 = __importDefault(require("../models/Wallet"));
-const allIncomeTransactions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const readAllTransactions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user._id;
-        const userTransactions = yield Transaction_1.default.find({ userId, type: "income" });
+        const userTransactions = yield Transaction_1.default.find({ userId });
         if (!userTransactions) {
             return res.status(404).json({ error: "User has no income transactions" });
         }
@@ -32,22 +32,20 @@ const allIncomeTransactions = (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.status(500).json({ error: "Internal server error" });
     }
 });
-exports.allIncomeTransactions = allIncomeTransactions;
-const allExpenseTransactions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const userId = req.user._id;
-        const userTransactions = yield Transaction_1.default.find({ userId, type: "expense" });
-        if (!userTransactions) {
-            return res.status(404).json({ error: "User has no expense transactions" });
-        }
-        res.status(200).json({ userTransactions });
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-exports.allExpenseTransactions = allExpenseTransactions;
+exports.readAllTransactions = readAllTransactions;
+// export const allExpenseTransactions = async (req: Request, res: Response) => {
+//   try {
+//     const userId = req.user._id;
+//     const userTransactions = await Transaction.find({ userId, type: "expense" });
+//     if (!userTransactions) {
+//       return res.status(404).json({ error: "User has no expense transactions" });
+//     }
+//     res.status(200).json({ userTransactions });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
 const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const session = yield (0, mongoose_1.startSession)();
     session.startTransaction();
@@ -58,7 +56,6 @@ const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         const userId = req.user._id;
         const { amount, description, type, categoryId, walletId, date } = req.body;
-        // const user: IUser = await User.findById(userId).populate("wallets categories");
         const category = yield Category_1.default.findById(categoryId);
         const wallet = yield Wallet_1.default.findById(walletId);
         if (!category) {
@@ -68,7 +65,6 @@ const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
             return res.status(400).json({ msg: "Wallet not found" });
         }
         const newTransaction = new Transaction_1.default({
-            // id: randomUUID(),
             description,
             amount,
             type,
@@ -83,13 +79,7 @@ const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
         else {
             wallet.balance -= amount;
         }
-        // await Category.findByIdAndUpdate(
-        //   categoryId,
-        //   { $push: { transactions: newTransaction._id } },
-        //   { new: true },
-        // );
         yield wallet.updateOne({ balance: wallet.balance }, { new: true }).session(session);
-        // await Wallet.findByIdAndUpdate(walletId, { balance: wallet.balance }, { new: true })
         const result = yield newTransaction.save({ session });
         yield session.commitTransaction();
         res.status(201).json({ message: "Tansaction saved success", result });
@@ -124,14 +114,6 @@ const deleteTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
         // Update the wallet and delete the transaction
         yield Wallet_1.default.findByIdAndUpdate(transaction.walletId, { balance: wallet.balance }, { new: true }).session(session);
         yield transaction.deleteOne({ session });
-        // Delete transaction from category
-        // await Category.findByIdAndUpdate(
-        //   transaction.categoryId,
-        //   {
-        //     $pull: { transactions: transaction._id },
-        //   },
-        //   { new: true },
-        // ).session(session);
         // Commit the transaction
         yield session.commitTransaction();
         res.status(200).json({ message: "Transaction deleted successfully" });

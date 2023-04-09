@@ -7,11 +7,14 @@ const express_1 = __importDefault(require("express"));
 // import { OAuth2Client } from "google-auth-library";
 const validations_1 = require("../validations/validations");
 const auth_controller_1 = require("../controllers/auth.controller");
+const authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 const router = express_1.default.Router();
 // Register new user by email
 router.post("/signup", validations_1.registerValidation, auth_controller_1.authSignUp);
 // Authentication user,
-router.post("/login", validations_1.loginValidation, auth_controller_1.authLogin);
+router.post("/signIn", validations_1.loginValidation, auth_controller_1.authSignIn);
+// Get User
+router.get("/", authMiddleware_1.default, auth_controller_1.getUser);
 // router.get("/google/login", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/confirm/:token", auth_controller_1.authConfirmToken);
 // // Register new user by Google

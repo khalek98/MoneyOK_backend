@@ -18,7 +18,7 @@ const UserSchema: Schema<IUser> = new Schema(
     password: String,
     username: { type: String, required: true },
     isConfirmed: { type: Boolean, default: false },
-    googleId: { type: String, unique: true },
+    googleId: { type: String, unique: true, sparse: true },
     avatarUrl: String,
     accessToken: { type: String },
     refreshToken: { type: String },
