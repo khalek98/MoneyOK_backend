@@ -25,7 +25,7 @@ const transporter = nodemailer_1.default.createTransport({
     },
 });
 const sendConfirmationEmail = (user, token) => __awaiter(void 0, void 0, void 0, function* () {
-    const link = `${process.env.APP_URL}/api/auth/confirm/${token}`;
+    const link = `${process.env.APP_URL}${process.env.PORT && `:${process.env.PORT}`}/api/auth/confirm/${token}`;
     yield transporter
         .sendMail({
         from: "xalek.islam@outlook.com",
