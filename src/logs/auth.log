@@ -120,3 +120,6 @@
 [2023-04-09T11:58:37.151Z] MongoNetworkError: connection 7 to 16.170.78.178:27017 closed
 [2023-04-09T11:58:39.734Z] MongoNetworkTimeoutError: connection timed out
 [2023-04-09T11:58:57.194Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-04-09T18:35:35.708Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-04-09T18:35:48.896Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: email_1 dup key: { email: "xalek.islam@gmail.com" }
+[2023-04-09T18:36:00.301Z] MongoServerError: E11000 duplicate key error collection: moneyok.users index: googleId_1 dup key: { googleId: null }
