@@ -173,7 +173,7 @@ const authConfirmToken = (req, res) => {
         User_1.default.findByIdAndUpdate(decoded._id, { isConfirmed: true }, { new: true })
             .then((res) => console.log("Email confirmed", res))
             .catch((err) => console.log(err));
-        return res.status(200).redirect(`${process.env.APP_URL}/auth/confirmed`);
+        return res.status(200).redirect(`${process.env.CORS_URL}/auth/confirmed`);
     }
     catch (err) {
         return res.status(400).send("<h1>Invalid token<h1/>");
