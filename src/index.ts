@@ -40,7 +40,12 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Настройка CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_URL,
+    credentials: true,
+  }),
+);
 
 // Middleware to initialize Passport
 app.use(passport.initialize());
