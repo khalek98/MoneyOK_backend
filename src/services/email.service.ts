@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendConfirmationEmail = async (user: IUser, token: string) => {
-  const link = `${process.env.APP_URL}:${process.env.PORT}/api/auth/confirm/${token}`;
+  const link = `${process.env.APP_URL}/api/auth/confirm/${token}`;
 
   await transporter
     .sendMail({
