@@ -14,12 +14,12 @@ export const createWallet = async (req: Request, res: Response) => {
 
     const userId = req.user._id;
 
-    const { name } = req.body as IWallet;
+    const { name, balance } = req.body as IWallet;
 
     const newWallet = new Wallet({
       name,
       userId,
-      transactions: [],
+      balance,
     });
 
     // await User.findByIdAndUpdate(userId, { $push: { wallets: newWallet._id } }, { new: true });
