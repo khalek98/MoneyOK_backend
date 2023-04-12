@@ -23,11 +23,11 @@ const createWallet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(400).json({ errors: errors.array() });
         }
         const userId = req.user._id;
-        const { name } = req.body;
+        const { name, balance } = req.body;
         const newWallet = new Wallet_1.default({
             name,
             userId,
-            transactions: [],
+            balance,
         });
         // await User.findByIdAndUpdate(userId, { $push: { wallets: newWallet._id } }, { new: true });
         const result = yield newWallet.save();
