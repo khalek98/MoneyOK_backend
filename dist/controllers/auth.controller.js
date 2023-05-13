@@ -164,11 +164,11 @@ const authSignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { _id } = user;
     const token = jsonwebtoken_1.default.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
     res.cookie("token", token, {
-        maxAge: 86400000,
+        domain: process.env.CORS_URL,
         httpOnly: true,
+        sameSite: "none",
         secure: true,
-        domain: ".onrender.com",
-        path: "/",
+        maxAge: 24 * 60 * 60 * 1000,
     });
     return res.status(200).json({ token });
 });

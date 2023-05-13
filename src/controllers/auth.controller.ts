@@ -172,11 +172,11 @@ export const authSignIn = async (req: Request, res: Response) => {
   const { _id } = user;
   const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
   res.cookie("token", token, {
-    maxAge: 86400000, // 1 day
+    domain: process.env.CORS_URL,
     httpOnly: true,
+    sameSite: "none",
     secure: true,
-    domain: ".onrender.com",
-    path: "/",
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   return res.status(200).json({ token });
