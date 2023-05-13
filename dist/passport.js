@@ -13,11 +13,11 @@ dotenv_1.default.config();
 // Настройка passport
 // Passport JWT configuration
 const jwtOptions = {
-    // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    jwtFromRequest: (res) => {
-        console.log(res.cookies);
-        return res.cookies.token;
-    },
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    // jwtFromRequest: (res) => {
+    //   console.log(res.cookies);
+    //   return res.cookies.token;
+    // },
     secretOrKey: process.env.JWT_SECRET,
 };
 passport_1.default.use(new passport_jwt_1.Strategy(jwtOptions, (payload, done) => {
