@@ -28,6 +28,9 @@ app.use((0, express_session_1.default)({
     secret: "secret-key",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        domain: null,
+    },
 }));
 // Настройка bodyParser и cookieParser
 app.use(body_parser_1.default.urlencoded({ extended: false }));

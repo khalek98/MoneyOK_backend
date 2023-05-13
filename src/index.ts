@@ -31,6 +31,9 @@ app.use(
     secret: "secret-key",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      domain: null,
+    },
   }),
 );
 
