@@ -32,7 +32,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      domain: null,
+      domain: ".onrender.com",
     },
   }),
 );
