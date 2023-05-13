@@ -37,7 +37,7 @@ app.use(
 // Настройка bodyParser и cookieParser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser());
 
 // Настройка CORS
 app.use(

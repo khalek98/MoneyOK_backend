@@ -175,7 +175,7 @@ export const authSignIn = async (req: Request, res: Response) => {
     maxAge: 86400000, // 1 day
     httpOnly: true,
     secure: true,
-    domain: process.env.CORS_URL,
+    domain: ".onrender.com",
     path: "/",
   });
 

@@ -167,7 +167,7 @@ const authSignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         maxAge: 86400000,
         httpOnly: true,
         secure: true,
-        domain: process.env.CORS_URL,
+        domain: ".onrender.com",
         path: "/",
     });
     return res.status(200).json({ token });
