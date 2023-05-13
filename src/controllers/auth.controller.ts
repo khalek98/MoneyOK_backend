@@ -171,6 +171,13 @@ export const authSignIn = async (req: Request, res: Response) => {
 
   const { _id } = user;
   const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  res.cookie("token", token, {
+    maxAge: 86400000, // 1 day
+    httpOnly: true,
+    secure: true,
+    domain: process.env.CORS_URL,
+    path: "/",
+  });
 
   return res.status(200).json({ token });
 };

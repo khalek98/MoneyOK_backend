@@ -163,6 +163,13 @@ const authSignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     const { _id } = user;
     const token = jsonwebtoken_1.default.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    res.cookie("token", token, {
+        maxAge: 86400000,
+        httpOnly: true,
+        secure: true,
+        domain: process.env.CORS_URL,
+        path: "/",
+    });
     return res.status(200).json({ token });
 });
 exports.authSignIn = authSignIn;

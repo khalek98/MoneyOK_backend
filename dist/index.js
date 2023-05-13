@@ -32,7 +32,7 @@ app.use((0, express_session_1.default)({
 // Настройка bodyParser и cookieParser
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
-app.use((0, cookie_parser_1.default)());
+app.use((0, cookie_parser_1.default)(process.env.COOKIE_SECRET));
 // Настройка CORS
 app.use((0, cors_1.default)({
     origin: process.env.CORS_URL,
