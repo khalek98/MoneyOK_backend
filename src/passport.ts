@@ -11,7 +11,12 @@ dotenv.config();
 // Настройка passport
 // Passport JWT configuration
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromExtractors([
+    (request) => {
+      return request?.cookies?.token;
+    },
+  ]),
   // jwtFromRequest: (res) => {
   //   console.log(res.cookies);
   //   return res.cookies.token;
