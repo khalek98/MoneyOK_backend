@@ -14,13 +14,10 @@ const jwtOptions = {
   // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   jwtFromRequest: ExtractJwt.fromExtractors([
     (request) => {
+      console.log(request.cookies);
       return request?.cookies?.token;
     },
   ]),
-  // jwtFromRequest: (res) => {
-  //   console.log(res.cookies);
-  //   return res.cookies.token;
-  // },
   secretOrKey: process.env.JWT_SECRET,
 };
 
