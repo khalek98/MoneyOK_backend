@@ -1,20 +1,16 @@
 import passport from "passport";
-// import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-// import { randomUUID } from "crypto";
 import dotenv from "dotenv";
 import { Strategy, ExtractJwt } from "passport-jwt";
 
-// import User from "./models/User";
-
 dotenv.config();
 
-// Настройка passport
 // Passport JWT configuration
 const jwtOptions = {
   // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   jwtFromRequest: ExtractJwt.fromExtractors([
     (request) => {
-      console.log(request.cookies);
+      // console.log(request.cookies);
+      console.log(request?.cookies?.token);
       return request?.cookies?.token;
     },
   ]),
@@ -23,7 +19,6 @@ const jwtOptions = {
 
 passport.use(
   new Strategy(jwtOptions, (payload, done) => {
-    // You can use the payload to verify the user and set the user object in the request
     const user = { ...payload };
     done(null, user);
   }),

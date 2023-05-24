@@ -4,27 +4,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
-// import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-// import { randomUUID } from "crypto";
 const dotenv_1 = __importDefault(require("dotenv"));
 const passport_jwt_1 = require("passport-jwt");
-// import User from "./models/User";
 dotenv_1.default.config();
-// Настройка passport
 // Passport JWT configuration
 const jwtOptions = {
     // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
         (request) => {
-            var _a;
-            console.log(request.cookies);
-            return (_a = request === null || request === void 0 ? void 0 : request.cookies) === null || _a === void 0 ? void 0 : _a.token;
+            var _a, _b;
+            // console.log(request.cookies);
+            console.log((_a = request === null || request === void 0 ? void 0 : request.cookies) === null || _a === void 0 ? void 0 : _a.token);
+            return (_b = request === null || request === void 0 ? void 0 : request.cookies) === null || _b === void 0 ? void 0 : _b.token;
         },
     ]),
     secretOrKey: process.env.JWT_SECRET,
 };
 passport_1.default.use(new passport_jwt_1.Strategy(jwtOptions, (payload, done) => {
-    // You can use the payload to verify the user and set the user object in the request
     const user = Object.assign({}, payload);
     done(null, user);
 }));

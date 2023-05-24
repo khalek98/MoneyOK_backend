@@ -19,30 +19,26 @@ const app = express();
 
 app.use(express.json());
 
-// Подключение к MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
   .then((res) => console.log("DB OK!"))
   .catch((err) => console.log("DB error", err));
 
-// Настройка сессий
 app.use(
   session({
     secret: "secret-key",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      domain: ".onrender.com",
+      domain: process.env.CORS_URL,
     },
   }),
 );
 
-// Настройка bodyParser и cookieParser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Настройка CORS
 app.use(
   cors({
     origin: process.env.CORS_URL,
@@ -54,23 +50,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Роуты для авторизации и регистрации пользователей
 app.use("/api/auth", authRoutes);
 
-// Защищенные роуты для просмотра расходов и доходов
 app.use("/api/transactions", transactionsRoutes);
 
 app.use("/api/wallets", walletsRoutes);
 
 app.use("/api/categories", categoriesRoutes);
 
-// Обработка ошибок
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-// Запуск сервера
 app.listen(process.env.PORT, () => {
   console.log(`Server started on http://localhost:${process.env.PORT}`);
 });
