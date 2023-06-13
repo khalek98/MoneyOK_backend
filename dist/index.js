@@ -7,7 +7,6 @@ const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const passport_1 = __importDefault(require("./passport"));
 const express_session_1 = __importDefault(require("express-session"));
-const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -18,6 +17,8 @@ const categories_1 = __importDefault(require("./routes/categories"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: false }));
+app.use((0, cookie_parser_1.default)());
 mongoose_1.default
     .connect(process.env.MONGODB_URI)
     .then((res) => console.log("DB OK!"))
@@ -30,9 +31,6 @@ app.use((0, express_session_1.default)({
         domain: process.env.CORS_URL,
     },
 }));
-app.use(body_parser_1.default.urlencoded({ extended: false }));
-app.use(body_parser_1.default.json());
-app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)({
     origin: process.env.CORS_URL,
     credentials: true,

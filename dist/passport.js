@@ -9,15 +9,7 @@ const passport_jwt_1 = require("passport-jwt");
 dotenv_1.default.config();
 // Passport JWT configuration
 const jwtOptions = {
-    // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
-        (request) => {
-            var _a, _b;
-            // console.log(request.cookies);
-            console.log((_a = request === null || request === void 0 ? void 0 : request.cookies) === null || _a === void 0 ? void 0 : _a.token);
-            return (_b = request === null || request === void 0 ? void 0 : request.cookies) === null || _b === void 0 ? void 0 : _b.token;
-        },
-    ]),
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET,
 };
 passport_1.default.use(new passport_jwt_1.Strategy(jwtOptions, (payload, done) => {
