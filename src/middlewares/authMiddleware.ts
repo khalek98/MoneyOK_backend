@@ -2,6 +2,7 @@ import passport from "passport";
 import { RequestHandler } from "express";
 
 const authMiddleware: RequestHandler = (req, res, next) => {
+  // console.log(res);
   passport.authenticate("jwt", { session: false }, (err, user) => {
     if (err) {
       return next(err);

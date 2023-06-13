@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import passport from "./passport";
 import jwt from "jsonwebtoken";
 import session from "express-session";
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -18,6 +17,8 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -34,10 +35,6 @@ app.use(
     },
   }),
 );
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cookieParser());
 
 app.use(
   cors({

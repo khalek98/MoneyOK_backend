@@ -6,14 +6,7 @@ dotenv.config();
 
 // Passport JWT configuration
 const jwtOptions = {
-  // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  jwtFromRequest: ExtractJwt.fromExtractors([
-    (request) => {
-      // console.log(request.cookies);
-      console.log(request?.cookies?.token);
-      return request?.cookies?.token;
-    },
-  ]),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
 };
 
