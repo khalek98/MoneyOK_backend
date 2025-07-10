@@ -31,7 +31,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      domain: process.env.CORS_URL,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );

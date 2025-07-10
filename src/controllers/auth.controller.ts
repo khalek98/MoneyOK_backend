@@ -131,9 +131,13 @@ export const authSignUp = async (req: Request, res: Response) => {
       Wallet.insertMany(wallets),
     ]);
 
-    const token = jwt.sign({ email, _id: savedUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { email, _id: savedUser._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     sendConfirmationEmail(savedUser, token);
 
@@ -170,9 +174,10 @@ export const authSignIn = async (req: Request, res: Response) => {
   }
 
   const { _id } = user;
-  const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
   res.cookie("token", token, {
-    domain: process.env.CORS_URL,
     httpOnly: true,
     sameSite: "none",
     secure: true,
