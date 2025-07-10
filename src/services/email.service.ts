@@ -5,8 +5,8 @@ import { IUser } from "../models/User";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
+  host: process.env.EMAIL_HOST || "smtp.office365.com",
+  port: +process.env.EMAIL_PORT || 587,
   auth: {
     user: process.env.EMAIL_USERNAME,
     pass: process.env.EMAIL_PASSWORD,
@@ -18,7 +18,7 @@ export const sendConfirmationEmail = async (user: IUser, token: string) => {
 
   await transporter
     .sendMail({
-      from: "xalek.islam@outlook.com",
+      from: process.env.EMAIL_USERNAME,
       to: user.email,
       subject: "Please confirm your registration",
       html: `
