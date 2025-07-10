@@ -30,6 +30,7 @@ app.use(
     secret: "secret-key",
     resave: false,
     saveUninitialized: false,
+    store: new session.MemoryStore(),
     cookie: {
       httpOnly: true,
       sameSite: "none",
