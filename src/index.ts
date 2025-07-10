@@ -33,14 +33,14 @@ app.use(
     cookie: {
       domain: process.env.CORS_URL,
     },
-  }),
+  })
 );
 
 app.use(
   cors({
     origin: process.env.CORS_URL,
     credentials: true,
-  }),
+  })
 );
 
 // Middleware to initialize Passport
