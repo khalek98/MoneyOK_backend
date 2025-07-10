@@ -4,8 +4,6 @@ import { IUser } from "../models/User";
 
 dotenv.config();
 
-console.log(process.env);
-
 const transporter = nodemailer.createTransport({
   host: (process.env.EMAIL_HOST as string) || "smtp.gmail.com",
   port: +process.env.EMAIL_PORT || 587,
